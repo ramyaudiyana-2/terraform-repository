@@ -1,0 +1,17 @@
+#######################
+# How do you conditionally deploy a bastion host only when an input variable enable_bastion is set to true
+#######################
+
+variable enable_bastion_host {
+  type = bool
+}
+
+resource "aws_instance" "bastion_host" {
+  count = var.enable_bastion_host ? 1 : 0
+  ami = "type"
+  instance_type = "t2.micro"
+}
+
+output "host" {
+  value = aws_instance.bastion_host.id
+}
