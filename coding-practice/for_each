@@ -1,0 +1,16 @@
+#######################
+# Write a configuration that creates multiple S3 buckets from a list of names, ensuring that removing an item from the middle of the list does not destroy and recreate the remaining buckets.
+#######################
+
+variable "users" {
+  default = ["alice", "bob", "charlie"]
+  }
+
+resource "aws_s3_bucket" "my_buckets" {
+  for_each = toset(var.users)
+    bucket = "bucket-${each.value}"
+}
+
+output "s3_buckets" {
+  value = [for u in aws_s3_bucket.my_buckets : u.id ]
+}
